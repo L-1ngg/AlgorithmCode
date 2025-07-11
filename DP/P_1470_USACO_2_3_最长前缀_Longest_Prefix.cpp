@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+
+#define ranges std::ranges
+#define views std::views
+
+using u32 = unsigned;
+using i64 = long long;
+using u64 = unsigned long long;
+
+using pii = std::pair<int, int>;
+using a3 = std::array<int, 3>;
+using a4 = std::array<int, 4>;
+
+const int dx[8] = { -1, 0, 1, 0, -1, -1, 1, 1 }, dy[8] = { 0, 1, 0, -1, -1, 1, -1, 1 };
+const int N = 1e6;
+const int MAXN = 1e6 + 10;
+const int inf = 1e9;
+const i64 INF = 9114511145141919810;
+const int mod = 1e9 + 7;
+
+void solve()
+{
+    std::set<std::string> st;
+    while (1) {
+        std::string s;  std::cin >> s;
+        if (s == ".") break;
+        st.insert(s);
+    }
+    std::string s, tmp;
+    while (std::cin >> tmp) s += tmp;
+
+    int n = s.length();
+    s = " " + s;
+    std::vector<int> f(n + 1, 0);
+    int ans = 0;
+    f[0] = 1;
+    for (int i = 1;i <= n;i++)
+        for (int j = 1;j <= std::min(i, 10);j++) {
+            f[i] |= (f[i - j] & st.count(s.substr(i - j + 1, j)));
+            if (f[i]) ans = i;
+        }
+    std::cout << ans;
+}
+
+signed main()
+{
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(0);
+    solve();
+}

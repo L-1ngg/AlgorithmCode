@@ -1,0 +1,1 @@
+{"name":"Local: 智乃酱的子集与超集","url":"d:\\VScode\\workspace\\code_\\lesson1\\前缀和\\智乃酱的子集与超集.cpp","tests":[{"id":1741750055708,"input":"3 5\n1 5 9\n1 1\n1 2\n2 1 2\n3 1 2 3\n0","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\VScode\\workspace\\code_\\lesson1\\前缀和\\智乃酱的子集与超集.cpp","group":"local","local":true}
