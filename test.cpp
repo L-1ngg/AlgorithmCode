@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
-// using namespace std;
+using namespace std;
+
 #define ranges std::ranges
 #define views std::views
 
@@ -18,175 +19,100 @@ const int inf = 1e9;
 const i64 INF = 9114511145141919810;
 const int mod = 1e9 + 7;
 
-template<class T> constexpr T qpow(T n, i64 k) {
-    T r = 1;
-    for (; k; k /= 2, n *= n) {
-        if (k % 2) {
-            r *= n;
+std::vector<int> color;
+
+struct HLD {
+    vector<vector<int>> e;
+    vector<int> siz, son;
+    vector<i64> ans;
+    set<int> cnt;
+    i64 sum, Max;
+    int hson;
+    HLD(int n) {
+        e.resize(n + 1);
+        siz.resize(n + 1);
+        son.resize(n + 1);
+        ans.resize(n + 1);
+        // cnt.resize(n + 1);
+        hson = 0;
+        sum = 0;
+        Max = 0;
+    }
+    void add(int u, int v) {
+        e[u].push_back(v);
+        e[v].push_back(u);
+    }
+    void dfs1(int u, int fa) {
+        siz[u] = 1;
+        for (auto v : e[u]) {
+            if (v == fa) continue;
+            dfs1(v, u);
+            siz[u] += siz[v];
+            if (siz[v] > siz[son[u]]) son[u] = v;
         }
     }
-    return r;
-}
-
-template<class T> constexpr T power(int n) {
-    return qpow(T(2), n);
-}
-
-template<const int& MOD> struct Zmod {
-    int x;
-    Zmod(signed x = 0) : x(norm(x% MOD)) {}
-    Zmod(i64 x) : x(norm(x% MOD)) {}
-
-    constexpr int norm(int x) const noexcept {
-        if (x < 0) [[unlikely]] {
-            x += MOD;
+    void calc(int u, int fa) {
+        cnt.insert(color[u]);
+        // if (cnt[color[u]] > Max) {
+        //     Max = cnt[color[u]];
+        //     sum = color[u];
+        // }
+        // else if (cnt[color[u]] == Max) {
+        //     sum += color[u];
+        // }
+        for (auto v : e[u]) {
+            if (v == fa || v == hson) continue;
+            calc(v, u);
         }
-        if (x >= MOD) [[unlikely]] {
-            x -= MOD;
+    }
+    void dfs2(int u, int fa, int opt) {
+        for (auto v : e[u]) {
+            if (v == fa || v == son[u]) continue;
+            dfs2(v, u, 0);
         }
-        return x;
-    }
-    explicit operator int() const {
-        return x;
-    }
-    constexpr int val() const {
-        return x;
-    }
-    constexpr Zmod operator-() const {
-        Zmod val = norm(MOD - x);
-        return val;
-    }
-    constexpr Zmod inv() const {
-        assert(x != 0);
-        return qpow(*this, MOD - 2);
-    }
-    friend constexpr auto& operator>>(std::istream& in, Zmod& j) {
-        int v;
-        in >> v;
-        j = Zmod(v);
-        return in;
-    }
-    friend constexpr auto& operator<<(std::ostream& o, const Zmod& j) {
-        return o << j.val();
-    }
-    constexpr Zmod& operator++() {
-        x = norm(x + 1);
-        return *this;
-    }
-    constexpr Zmod& operator--() {
-        x = norm(x - 1);
-        return *this;
-    }
-    constexpr Zmod operator++(signed) {
-        Zmod res = *this;
-        ++*this;
-        return res;
-    }
-    constexpr Zmod operator--(signed) {
-        Zmod res = *this;
-        --*this;
-        return res;
-    }
-    constexpr Zmod& operator+=(const Zmod& i) {
-        x = norm(x + i.x);
-        return *this;
-    }
-    constexpr Zmod& operator-=(const Zmod& i) {
-        x = norm(x - i.x);
-        return *this;
-    }
-    constexpr Zmod& operator*=(const Zmod& i) {
-        x = i64(x) * i.x % MOD;
-        return *this;
-    }
-    constexpr Zmod& operator/=(const Zmod& i) {
-        return *this *= i.inv();
-    }
-    constexpr Zmod& operator%=(const int& i) {
-        return x %= i, *this;
-    }
-    friend constexpr Zmod operator+(const Zmod i, const Zmod j) {
-        return Zmod(i) += j;
-    }
-    friend constexpr Zmod operator-(const Zmod i, const Zmod j) {
-        return Zmod(i) -= j;
-    }
-    friend constexpr Zmod operator*(const Zmod i, const Zmod j) {
-        return Zmod(i) *= j;
-    }
-    friend constexpr Zmod operator/(const Zmod i, const Zmod j) {
-        return Zmod(i) /= j;
-    }
-    friend constexpr Zmod operator%(const Zmod i, const int j) {
-        return Zmod(i) %= j;
-    }
-    friend constexpr bool operator==(const Zmod i, const Zmod j) {
-        return i.val() == j.val();
-    }
-    friend constexpr bool operator!=(const Zmod i, const Zmod j) {
-        return i.val() != j.val();
-    }
-    friend constexpr bool operator<(const Zmod i, const Zmod j) {
-        return i.val() < j.val();
-    }
-    friend constexpr bool operator>(const Zmod i, const Zmod j) {
-        return i.val() > j.val();
+        if (son[u]) {
+            dfs2(son[u], u, 1);
+            hson = son[u]; //记录重链编号，计算的时候跳过
+        }
+        calc(u, fa);
+        hson = 0; //消除的时候所有儿子都清除
+        ans[u] = cnt.size();
+        if (!opt) {
+            cnt.clear();
+            sum = 0;
+            Max = 0;
+        }
     }
 };
 
-int MOD[] = { 998244353, 1000000007 };
-using Z = Zmod<MOD[1]>;
-
-struct Comb {
-    int n;
-    std::vector<Z> _fac, _inv;
-
-    Comb() : _fac{ 1 }, _inv{ 0 } {}
-    Comb(int n) : Comb() {
-        init(n);
-    }
-    void init(int m) {
-        if (m <= n) return;
-        _fac.resize(m + 1);
-        _inv.resize(m + 1);
-        for (int i = n + 1; i <= m; i++) {
-            _fac[i] = _fac[i - 1] * i;
-        }
-        _inv[m] = _fac[m].inv();
-        for (int i = m; i > n; i--) {
-            _inv[i - 1] = _inv[i] * i;
-        }
-        n = m;
-    }
-    Z fac(int x) {
-        if (x > n) init(x);
-        return _fac[x];
-    }
-    Z inv(int x) {
-        if (x > n) init(x);
-        return _inv[x];
-    }
-    Z C(int x, int y) {
-        if (x < 0 || y < 0 || x < y) return 0;
-        return fac(x) * inv(y) * inv(x - y);
-    }
-    Z P(int x, int y) {
-        if (x < 0 || y < 0 || x < y) return 0;
-        return fac(x) * inv(x - y);
-    }
-} comb(1 << 21);
-
-
-
 void solve()
 {
-    Z a = 1;
-    std::cout << a;
+    int n;  std::cin >> n;
+    color.assign(n + 1, 0);
+    HLD hld(n);
+    for (int i = 1;i <= n - 1;i++)
+    {
+        int u, v;   std::cin >> u >> v;
+        hld.add(u, v);
+    }
+    for (int i = 1;i <= n;i++)  std::cin >> color[i];
+    hld.dfs1(1, 0);
+    hld.dfs2(1, 0, 0);
+    int q;  std::cin >> q;
+    while (q--) {
+        int x;  std::cin >> x;
+        std::cout << hld.ans[x] << '\n';
+    }
+    // for (int i = 1;i <= n;i++)
+    //     std::cout << hld.ans[i] << " \n"[i == n];
 }
 
 signed main()
 {
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
-    solve();
+    int t = 1;
+    //std::cin >> t;
+    while (t--)
+        solve();
 }
