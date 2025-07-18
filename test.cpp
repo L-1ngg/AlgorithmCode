@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-using namespace std;
 
 #define ranges std::ranges
 #define views std::views
@@ -19,92 +18,45 @@ const int inf = 1e9;
 const i64 INF = 9114511145141919810;
 const int mod = 1e9 + 7;
 
-std::vector<int> color;
+// void solve()
+// {
+//     int n, m;   std::cin >> n >> m;
+//     std::vector<int> a(n + 1), b(m + 1);
+//     for (int i = 1;i <= n;i++)   std::cin >> a[i];
+//     for (int i = 1;i <= m;i++)   std::cin >> b[i];
+//     std::sort(b.begin() + 1, b.end());
 
-struct HLD {
-    vector<vector<int>> e;
-    vector<int> siz, son;
-    vector<i64> ans;
-    set<int> cnt;
-    i64 sum, Max;
-    int hson;
-    HLD(int n) {
-        e.resize(n + 1);
-        siz.resize(n + 1);
-        son.resize(n + 1);
-        ans.resize(n + 1);
-        // cnt.resize(n + 1);
-        hson = 0;
-        sum = 0;
-        Max = 0;
-    }
-    void add(int u, int v) {
-        e[u].push_back(v);
-        e[v].push_back(u);
-    }
-    void dfs1(int u, int fa) {
-        siz[u] = 1;
-        for (auto v : e[u]) {
-            if (v == fa) continue;
-            dfs1(v, u);
-            siz[u] += siz[v];
-            if (siz[v] > siz[son[u]]) son[u] = v;
-        }
-    }
-    void calc(int u, int fa) {
-        cnt.insert(color[u]);
-        // if (cnt[color[u]] > Max) {
-        //     Max = cnt[color[u]];
-        //     sum = color[u];
-        // }
-        // else if (cnt[color[u]] == Max) {
-        //     sum += color[u];
-        // }
-        for (auto v : e[u]) {
-            if (v == fa || v == hson) continue;
-            calc(v, u);
-        }
-    }
-    void dfs2(int u, int fa, int opt) {
-        for (auto v : e[u]) {
-            if (v == fa || v == son[u]) continue;
-            dfs2(v, u, 0);
-        }
-        if (son[u]) {
-            dfs2(son[u], u, 1);
-            hson = son[u]; //记录重链编号，计算的时候跳过
-        }
-        calc(u, fa);
-        hson = 0; //消除的时候所有儿子都清除
-        ans[u] = cnt.size();
-        if (!opt) {
-            cnt.clear();
-            sum = 0;
-            Max = 0;
-        }
-    }
-};
-
+//     a[n] = std::max(a[n], b[m] - a[n]);
+//     for (int i = n - 1;i >= 1;i--) {
+//         int j = std::upper_bound(b.begin() + 1, b.end(), a[i] + a[i + 1]) - b.begin() - 1;
+//         if (j < 1 && a[i] > a[i + 1]) {
+//             std::cout << "NO\n";
+//             return;
+//         }
+//         if (a[i] > a[i + 1] || b[j] - a[i] > a[i])
+//             a[i] = b[j] - a[i];
+//     }
+//     std::cout << "YES\n";
+// }
 void solve()
 {
-    int n;  std::cin >> n;
-    color.assign(n + 1, 0);
-    HLD hld(n);
-    for (int i = 1;i <= n - 1;i++)
-    {
-        int u, v;   std::cin >> u >> v;
-        hld.add(u, v);
+    int n, m;   std::cin >> n >> m;
+    std::vector<int> a(n + 1), b(m + 1);
+    for (int i = 1;i <= n;i++)   std::cin >> a[i];
+    for (int i = 1;i <= m;i++)   std::cin >> b[i];
+    std::sort(b.begin() + 1, b.end());
+    a[0] = -inf;
+    for (int i = 1;i <= n;i++) {
+        int p = std::lower_bound(b.begin() + 1, b.end(), a[i - 1] + a[i]) - b.begin();
+        if (p == m + 1 && a[i] < a[i - 1]) {
+            std::cout << "NO\n";
+            return;
+        }
+        if (p == m + 1) continue;
+        if (a[i] >= a[i - 1]) a[i] = std::min(a[i], b[p] - a[i]);
+        else a[i] = b[p] - a[i];
     }
-    for (int i = 1;i <= n;i++)  std::cin >> color[i];
-    hld.dfs1(1, 0);
-    hld.dfs2(1, 0, 0);
-    int q;  std::cin >> q;
-    while (q--) {
-        int x;  std::cin >> x;
-        std::cout << hld.ans[x] << '\n';
-    }
-    // for (int i = 1;i <= n;i++)
-    //     std::cout << hld.ans[i] << " \n"[i == n];
+    std::cout << "YES\n";
 }
 
 signed main()
@@ -112,7 +64,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }
