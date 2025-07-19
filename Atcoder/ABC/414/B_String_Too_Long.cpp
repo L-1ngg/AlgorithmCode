@@ -11,6 +11,7 @@ using pii = std::pair<int, int>;
 using a3 = std::array<int, 3>;
 using a4 = std::array<int, 4>;
 
+const int dx[8] = { -1, 0, 1, 0, -1, -1, 1, 1 }, dy[8] = { 0, 1, 0, -1, -1, 1, -1, 1 };
 const int N = 1e6;
 const int MAXN = 1e6 + 10;
 const int inf = 1e9;
@@ -20,29 +21,27 @@ const int mod = 1e9 + 7;
 void solve()
 {
     int n;  std::cin >> n;
-    if (!(n & 1))
-        std::cout << "-1\n";
-    else {
-        // for (int i = n; i >= 1;i--)
-        //     std::cout << i << " \n"[i == 1];
-        std::vector<int> a(n);
-        int pos = n >> 1;
-        a[pos] = pos + 1;
-        for (int i = 1, p = pos;i <= n - 1;i++) {
-            pos = (pos + 2) % n;
-            p = (p + 1) % n;
-            a[p] = pos + 1;
+    std::string s = "";
+    int len = 0;
+    while (n--) {
+        std::string res; int cnt;
+        std::cin >> res >> cnt;
+        len += cnt;
+        if (len > 100) {
+            std::cout << "Too Long";
+            return;
         }
-        for (int i = 0;i < n;i++)   std::cout << a[i] << " \n"[i == n - 1];
+        for (int i = 1;i <= cnt;i++) s += res;
     }
+    std::cout << s;
 }
 
 signed main()
 {
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
-    int t;
-    std::cin >> t;
+    int t = 1;
+    //std::cin >> t;
     while (t--)
         solve();
 }
