@@ -92,7 +92,7 @@ void solve()
 
     int q; std::cin >> q;
     while (q--) {
-        int k;  std::cin >> k;
+        i64 k;  std::cin >> k;
         i64 ans = 0;
         if (k < st)  ans = pre[k];
         else {

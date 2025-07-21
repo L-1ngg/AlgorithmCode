@@ -18,56 +18,55 @@ const int inf = 1e9;
 const i64 INF = 9114511145141919810;
 const int mod = 1e9 + 7;
 
-struct node {
-    std::map<int, i64> num;
-    int col;
-    std::map<int, int> adj;
-    std::set<int> con;
-    std::set<a3> upd;
-};
-void solve()
-{
+void solve() {
     int n, q;   std::cin >> n >> q;
-    std::vector<node> a(n + 1);
-    for (int i = 1;i <= n;i++)   std::cin >> a[i].col;
+    std::vector<int> col(n + 1);
+    for (int i = 1;i <= n;i++)   std::cin >> col[i];
+    std::map<int, pii> adj[n + 1];
+    std::map<int, i64> res[n + 1];
+    std::vector<int> upd[n + 1];
+    std::vector<int> con[n + 1];
 
     i64 ans = 0;
+    // std::cout << res[2][1] << '\n';
     for (int i = 1;i <= n - 1;i++) {
         int u, v, w;    std::cin >> u >> v >> w;
-        a[u].adj[v] = w;
-        a[u].num[a[v].col] += w;
-        a[u].con.insert(v);
+        adj[u][v] = { w,col[v] };
+        adj[v][u] = { w,col[u] };
 
-        a[v].adj[u] = w;
-        a[v].num[a[u].col] += w;
-        a[v].con.insert(u);
+        if (col[u] != col[v])   ans += w;
+        res[u][col[v]] += w;
+        res[v][col[u]] += w;
 
-        if (a[u].col != a[v].col) ans += w;
+        con[v].push_back(u);
+        con[u].push_back(v);
     }
 
-    auto cal = [&](int x, int col) {
-        for (auto [v, old, w] : a[x].upd) {
-            a[x].num[old] -= w;
-            if (a[x].num[old] == 0) a[x].num.erase(old);
-            a[x].num[a[v].col] += w;
-
-            a[v].con.insert(x);
-        }
-        a[x].upd.clear();
-        for (auto v : a[x].con) {
-            a[v].upd.insert({ x,a[x].col, a[x].adj[v] });
-        }
-        a[x].con.clear();
-
-        };
     while (q--) {
-        int x, col; std::cin >> x >> col;
-        if (a[x].col != col) {
-            cal(x, col);
-            ans -= a[x].num[col];
-            ans += a[x].num[a[x].col];
-            a[x].col = col;
+        int u, y;   std::cin >> u >> y;
+
+        if (upd[u].size()) {
+            for (auto v : upd[u])
+            {
+                int tmpcol = adj[u][v].second;
+                adj[u][v].second = col[v];
+                if (tmpcol != col[v]) {
+                    if (!(res[u][tmpcol] -= adj[u][v].first)) res[u].erase(tmpcol);
+                    res[u][col[v]] += adj[u][v].first;
+                }
+
+                con[v].push_back(u);
+            }
         }
+        upd[u].clear();
+
+        for (auto v : con[u])
+            upd[v].push_back(u);
+        con[u].clear();
+
+        ans -= res[u][y];
+        ans += res[u][col[u]];
+        col[u] = y;
         std::cout << ans << '\n';
     }
 }
