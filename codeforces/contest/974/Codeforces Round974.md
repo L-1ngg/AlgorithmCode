@@ -278,3 +278,54 @@ std::mt19937_64 rnd(time(0));
     }
 ```
 
+增加一个莫队写法
+
+``` cpp
+std::vector<int> cnt(MAXN);
+void solve()
+{
+    int n, q;   std::cin >> n >> q;
+    std::vector<int> a(n + 1);
+    for (int i = 1;i <= n;i++) {
+        std::cin >> a[i];
+        cnt[a[i]] = 0;
+    }
+
+    std::vector<a3> que(q + 1);
+    for (int i = 1;i <= q;i++) {
+        int l, r;
+        std::cin >> l >> r;
+        que[i] = { l,r,i };
+    }
+    int Knum = n / std::min<int>(n, sqrt(q));
+    std::vector<int> K(n + 1);
+    for (int i = 1; i <= n; i++) {
+        K[i] = (i - 1) / Knum + 1;
+    }
+    std::sort(que.begin() + 1, que.end(), [&](auto x, auto y) {
+        if (K[x[0]] != K[y[0]]) return x[0] < y[0];
+        if (K[x[0]] & 1) return x[1] < y[1];
+        return x[1] > y[1];
+        });
+
+    int l = 1, r = 0, val = 0;
+    std::vector<int> ans(q + 1);
+    for (int i = 1; i <= q; i++) {
+        auto [ql, qr, id] = que[i];
+        auto add = [&](int x) -> void {
+            cnt[x] ^= 1;
+            if (cnt[x]) val++;
+            else val--;
+            };
+        // auto del = [&](int x) -> void {};
+        while (l > ql) add(a[--l]);
+        while (r < qr) add(a[++r]);
+        while (l < ql) add(a[l++]);
+        while (r > qr) add(a[r--]);
+        ans[id] = val;
+    }
+    for (int i = 1;i <= q;i++)
+        std::cout << (ans[i] == 0 ? "YES\n" : "NO\n");
+}
+```
+
