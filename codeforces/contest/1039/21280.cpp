@@ -20,7 +20,22 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n, c;  std::cin >> n >> c;
+    std::vector<int> a;
+    int ans = 0;
+    i64 base = 1;
+    for (int i = 1;i <= n;i++) {
+        int x;  std::cin >> x;
+        if (x > c) ans++;
+        else a.push_back(x);
+    }
+    ranges::sort(a);
+    for (int i = a.size() - 1;i >= 0;i--)
+    {
+        if ((i64)a[i] * base > c) ans++;
+        else base *= 2;
+    }
+    std::cout << ans << '\n';
 }
 
 signed main()
@@ -28,7 +43,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

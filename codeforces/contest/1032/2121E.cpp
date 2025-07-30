@@ -20,7 +20,27 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int l, r;   std::cin >> l >> r;
+    std::vector<int> a, b;
+    while (l) {
+        a.push_back(l % 10);
+        l /= 10;
+        b.push_back(r % 10);
+        r /= 10;
+    }
+    int n = a.size();
+    n--;
+
+    int ans = 0;
+    int x = 0, y = 0;
+    for (int i = n;i >= 0;i--) {
+        x = x * 10 + a[i];
+        y = y * 10 + b[i];
+        if (x == y) ans += 2;
+        else if (std::abs(x - y) == 1) ans += 1;
+        else break;
+    }
+    std::cout << ans << '\n';
 }
 
 signed main()
@@ -28,7 +48,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

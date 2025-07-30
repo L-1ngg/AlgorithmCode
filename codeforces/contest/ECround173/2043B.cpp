@@ -20,7 +20,21 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n, d;   std::cin >> n >> d;
+    std::cout << 1 << " ";
+    if (n >= 3)  std::cout << 3 << " ";
+    else std::cout << (n * d % 3 == 0 ? "3 " : "");
+    if (d == 5)  std::cout << 5 << " ";
+    if (n >= 3)  std::cout << 7 << " ";
+    else if ((d * 10 + d) % 7 == 0)   std::cout << 7 << " ";
+    if (n >= 6)  std::cout << 9 << " ";
+    else {
+        int num = 1;
+        while (n) {
+            num *= n--;
+        }
+        std::cout << (num * d % 9 == 0 ? "9 " : "");
+    }
 }
 
 signed main()
@@ -28,7 +42,10 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
+    {
         solve();
+        std::cout << '\n';
+    }
 }

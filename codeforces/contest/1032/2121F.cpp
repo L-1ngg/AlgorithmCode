@@ -20,7 +20,27 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n;  std::cin >> n;
+    i64 s, x;   std::cin >> s >> x;
+    std::vector<int> a(n + 1);
+    for (int i = 1;i <= n;i++)  std::cin >> a[i];
+    std::vector<i64> pre(n + 1);
+    for (int i = 1;i <= n;i++) pre[i] = pre[i - 1] + a[i];
+
+    auto cal = [&](int x) {
+        std::map<int, int> cnt;
+        cnt[0] = 1;
+        i64 ans = 0;
+        for (int i = 1;i <= n;i++)
+        {
+            if (a[i] > x) cnt.clear();
+            ans += cnt[pre[i] - s];
+            cnt[pre[i]]++;
+        }
+        return ans;
+        };
+
+    std::cout << cal(x) - cal(x - 1) << '\n';
 }
 
 signed main()
@@ -28,7 +48,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

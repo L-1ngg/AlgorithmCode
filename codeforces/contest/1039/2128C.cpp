@@ -20,7 +20,26 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n;  std::cin >> n;
+    std::vector<int> a(n + 1);
+    for (int i = 1;i <= n;i++)   std::cin >> a[i];
+    std::vector<int> suf(n + 2);
+    for (int i = n;i >= 1;i--)
+        suf[i] = std::max(a[i], suf[i + 1]);
+    int mx = 0;
+    for (int i = 1;i <= n;i++)
+    {
+        if (a[i] == 1 && suf[i + 1] > 1) {
+            std::cout << "NO\n";
+            return;
+        }
+        if (a[i] * 2 <= suf[i + 1])
+        {
+            std::cout << "NO\n";
+            return;
+        }
+    }
+    std::cout << "YES\n";
 }
 
 signed main()
@@ -28,7 +47,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

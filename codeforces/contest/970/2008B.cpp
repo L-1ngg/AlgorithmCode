@@ -20,7 +20,25 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n;  std::cin >> n;
+    std::string s;  std::cin >> s;
+    s = " " + s;
+    int sz = std::sqrt(n);
+    if (sz * sz != n) {
+        std::cout << "No\n";
+        return;
+    }
+    for (int i = 1;i <= sz;i++)
+        for (int j = 1;j <= sz;j++)
+        {
+            int f = 0;
+            if (i == 1 || i == sz || j == 1 || j == sz) f = 1;
+            if (s[(i - 1) * sz + j] - '0' != f) {
+                std::cout << "No\n";
+                return;
+            }
+        }
+    std::cout << "Yes\n";
 }
 
 signed main()
@@ -28,7 +46,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

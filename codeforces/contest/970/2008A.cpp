@@ -20,7 +20,14 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int a, b;   std::cin >> a >> b;
+    b = b % 2;
+    if (b && a < 2) {
+        std::cout << "NO\n";
+        return;
+    }
+    a -= (b == 1 ? 2 : 0);
+    std::cout << ((a & 1) ? "NO\n" : "YES\n");
 }
 
 signed main()
@@ -28,7 +35,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

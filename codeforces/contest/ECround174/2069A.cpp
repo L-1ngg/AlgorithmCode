@@ -20,7 +20,17 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n;  std::cin >> n;
+    std::vector<int> b(n - 1);
+    for (int i = 1;i <= n - 2;i++)  std::cin >> b[i];
+    for (int i = 3;i <= n - 2;i++)
+    {
+        if (b[i] == b[i - 2] && b[i] == 1 && b[i - 1] == 0) {
+            std::cout << "NO\n";
+            return;
+        }
+    }
+    std::cout << "YES\n";
 }
 
 signed main()
@@ -28,7 +38,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

@@ -20,7 +20,17 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n;  std::cin >> n;
+    std::multiset<int> st;
+
+    while (n--) {
+        int l, r;   std::cin >> l >> r;
+        auto it = st.upper_bound(r);
+        if (it != st.end()) st.erase(it);
+        st.insert(l);
+        std::cout << st.size() << " ";
+    }
+    std::cout << '\n';
 }
 
 signed main()
@@ -28,7 +38,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

@@ -20,7 +20,14 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n, p;  std::cin >> n >> p;
+    int mn = inf, mx = 0;
+    while (n--) {
+        int x;  std::cin >> x;
+        mn = std::min(mn, x);
+        mx = std::max(mx, x);
+    }
+    std::cout << std::min(std::abs(mn - p), std::abs(mx - p)) + mx - mn << '\n';
 }
 
 signed main()
@@ -28,7 +35,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

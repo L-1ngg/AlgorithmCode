@@ -20,7 +20,24 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n, k;   std::cin >> n >> k;
+    std::vector<int> a(n + 1);
+
+    for (int i = 1;i <= n;i++)   std::cin >> a[i];
+    if (n == 1) {
+        std::cout << (k - 1 >= a[1] ? k : k - 1) << '\n';
+        return;
+    }
+    int g = a[1];
+    for (int i = 1;i <= n;i++)
+        g = std::gcd(g, a[i]);
+
+    if (g == 1)  std::cout << n - 1 + k << '\n';
+    else {
+        int cnt = (k + g - 2) / (g - 1);
+        cnt = std::min(cnt, n);
+        std::cout << cnt + k - 1 << '\n';
+    }
 }
 
 signed main()
@@ -28,7 +45,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

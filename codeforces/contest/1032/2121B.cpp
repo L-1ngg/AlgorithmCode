@@ -20,7 +20,19 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n;  std::cin >> n;
+    std::string s;  std::cin >> s;
+    std::vector<int> cnt(26, 0);
+    cnt[s[0] - 'a']++;
+    cnt[s[n - 1] - 'a']++;
+    for (int i = 1;i < n - 1;i++)
+    {
+        if (cnt[s[i] - 'a']++) {
+            std::cout << "Yes\n";
+            return;
+        }
+    }
+    std::cout << "No\n";
 }
 
 signed main()
@@ -28,7 +40,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

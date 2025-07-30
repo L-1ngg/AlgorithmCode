@@ -20,7 +20,16 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    int n;  std::cin >> n;
+    std::vector<i64> f(4);
+    f[0] = 1;
+    while (n--) {
+        int x;  std::cin >> x;
+        if (x == 2) f[x] += f[x];
+        f[x] += f[x - 1];
+        f[x] %= mod;
+    }
+    std::cout << f[3] << '\n';
 }
 
 signed main()
@@ -28,7 +37,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }

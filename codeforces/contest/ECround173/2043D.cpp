@@ -20,7 +20,19 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
-    std::cout << (1 << 2 + 1);
+    i64 l, r, g;    std::cin >> l >> r >> g;
+    i64 a = (l + g - 1) / g;
+    i64 b = r / g;
+
+    for (i64 len = b - a;len >= 0;len--) {
+        for (i64 i = a;i + len <= b;i++)
+            if (std::gcd(i, i + len) == 1)
+            {
+                std::cout << i * g << " " << (i + len) * g << '\n';
+                return;
+            }
+    }
+    std::cout << "-1 -1\n";
 }
 
 signed main()
@@ -28,7 +40,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--)
         solve();
 }
