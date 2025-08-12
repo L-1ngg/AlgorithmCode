@@ -20,7 +20,23 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
+    int n;  std::cin >> n;
+    int k;  std::cin >> k;
+    std::map<int, int> a, b;
+    for (int i = 1;i <= n;i++) {
+        int x;  std::cin >> x;
+        a[x % k]++;
+    }
+    for (int i = 1;i <= n;i++) {
+        int x;  std::cin >> x;
+        b[x % k]++;
+    }
+    int f = 0;
+    for (auto [x, y] : a)
+        if (a[x] + a[k - x] != b[x] + b[k - x]) f = 1;
 
+    if (f)   std::cout << "NO";
+    else std::cout << "YES";
 }
 
 signed main()
@@ -28,7 +44,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--) {
         solve();
         std::cout << '\n';

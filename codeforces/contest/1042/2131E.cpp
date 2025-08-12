@@ -20,7 +20,28 @@ const int mod = 1e9 + 7;
 
 void solve()
 {
+    int n;  std::cin >> n;
+    std::vector<int> a(n + 1), b(n + 1);
+    for (int i = 1;i <= n;i++)   std::cin >> a[i];
+    for (int i = 1;i <= n;i++)   std::cin >> b[i];
 
+    if (a[n] != b[n]) {
+        std::cout << "NO";
+        return;
+    }
+    for (int i = n - 1;i >= 1;i--)
+    {
+        if (a[i] == b[i]) continue;
+        else {
+            int num1 = a[i] ^ a[i + 1];
+            int num2 = a[i] ^ b[i + 1];
+            if (num1 != b[i] && num2 != b[i]) {
+                std::cout << "NO";
+                return;
+            }
+        }
+    }
+    std::cout << "YES";
 }
 
 signed main()
@@ -28,7 +49,7 @@ signed main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     int t = 1;
-    //std::cin >> t;
+    std::cin >> t;
     while (t--) {
         solve();
         std::cout << '\n';
